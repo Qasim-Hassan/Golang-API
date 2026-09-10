@@ -22,6 +22,8 @@ func (app *application) mount() http.Handler {
 	})
 
 	http.ListenAndServe(":3333", r)
+
+	return nil
 }
 
 type config struct {
