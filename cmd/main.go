@@ -18,6 +18,6 @@ func main() {
 	h := api.mount()
 	if err := api.run(h); err != nil {
 		log.Printf("Server failed %v", err)
-		os.Exit(501)
+		os.Exit(500)
 	}
 }
