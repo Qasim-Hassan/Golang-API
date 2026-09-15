@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend-server/internal/products"
 	"log"
 	"net/http"
 	"time"
@@ -36,6 +37,9 @@ func (app *application) mount() http.Handler {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("all good"))
 	})
+
+	productHandler := products.NewHandler(nil)
+	r.Get("/products", productHandler.ListProducts)
 
 	return r
 }
