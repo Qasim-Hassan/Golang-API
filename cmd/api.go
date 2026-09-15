@@ -14,6 +14,9 @@ type application struct {
 // mount
 func (app *application) mount() http.Handler {
 	r := chi.NewRouter()
+
+	// Base middleware stack
+	r.Use(middleware.RequestID) // For Rate-Limiting
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
@@ -23,7 +26,7 @@ func (app *application) mount() http.Handler {
 
 	http.ListenAndServe(":3333", r)
 
-	return nil
+	return r
 }
 
 type config struct {
