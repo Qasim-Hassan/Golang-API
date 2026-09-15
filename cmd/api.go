@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -48,4 +49,8 @@ func (app *application) run(h http.Handler) error {
 		WriteTimeout: time.Second * 10,
 		IdleTimeout:  time.Minute,
 	}
+
+	log.Printf("Server is running on %v", app.cfg.addr)
+
+	return server.ListenAndServe()
 }
