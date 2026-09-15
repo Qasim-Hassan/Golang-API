@@ -2,6 +2,7 @@ package products
 
 import (
 	"backend-server/internal/json"
+	"log"
 	"net/http"
 )
 
@@ -17,7 +18,12 @@ func NewHandler(s Service) *handler {
 
 func (h *handler) ListProducts(w http.ResponseWriter, r *http.Request) {
 	// 1. CALL the serice → return products
-	// 2. Return JSON in an HTTP response
+	err := h.service.ListProducts(r.Context())
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	products := []string{"hey", "there"}
 
