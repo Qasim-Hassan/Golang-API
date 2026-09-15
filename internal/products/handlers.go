@@ -1,7 +1,7 @@
 package products
 
 import (
-	"encoding/json"
+	"backend-server/internal/json"
 	"net/http"
 )
 
@@ -19,7 +19,7 @@ func (h *handler) ListProducts(w http.ResponseWriter, r *http.Request) {
 	// 1. CALL the serice → return products
 	// 2. Return JSON in an HTTP response
 
-	products := []string{"Hello", "World"}
+	products := []string{"hey", "there"}
 
-	json.NewEncoder(w).Encode(products)
+	json.Write(w, 200, products)
 }
