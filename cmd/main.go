@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func main() {
 	cfg := config{
 		addr: ":8080",
@@ -11,6 +9,4 @@ func main() {
 	api := application{
 		cfg: cfg,
 	}
-
-	fmt.Println(api)
 }

@@ -2,10 +2,20 @@ package main
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
+
+type config struct {
+	addr string
+	db   dbConfig
+}
+
+type dbConfig struct {
+	dsn string
+}
 
 type application struct {
 	cfg config
@@ -18,22 +28,24 @@ func (app *application) mount() http.Handler {
 	// Base middleware stack
 	r.Use(middleware.RequestID) // For Rate-Limiting
 	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
+	r.Use(middleware.Recoverer) // recover from crashes
+
+	r.Use(middleware.Timeout(60 * time.Second)) // stops processing a request once the request timed out
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("root."))
+		w.Write([]byte("all good"))
 	})
-
-	http.ListenAndServe(":3333", r)
 
 	return r
 }
 
-type config struct {
-	addr string
-	db   dbConfig
-}
-
-type dbConfig struct {
-	dsn string
+// run server
+func (app *application) run(h http.Handler) error {
+	server := &http.Server{
+		Addr:         app.cfg.addr,
+		Handler:      h,
+		ReadTimeout:  time.Second * 30,
+		WriteTimeout: time.Second * 10,
+		IdleTimeout:  time.Minute,
+	}
 }
