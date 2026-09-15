@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"os"
+)
 
 func main() {
 	cfg := config{
@@ -12,5 +15,9 @@ func main() {
 		cfg: cfg,
 	}
 
-	fmt.Println(api)
+	h := api.mount()
+	if err := api.run(h); err != nil {
+		log.Printf("Server failed %v", err)
+		os.Exit(500)
+	}
 }
